@@ -52,7 +52,7 @@ export const resolvers = {
     },
 
     Mutation:{
-        addRestaurant: async(
+        addBiblioteca: async(
             _:unknown,
             params: addBibliotecaArgs,
             ctx: Context
