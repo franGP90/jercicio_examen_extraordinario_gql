@@ -2,6 +2,7 @@ import { getCity, getCountryName, getLocalTime, getTemp, phoneIsVAlid } from "./
 import { BibliotecaModel } from "./types.ts"
 import { Collection ,ObjectId} from "mongodb"
 import { GraphQLError } from "graphql"
+import { ContextualizedQueryLatencyStats } from "../../../../../../AppData/Local/deno/npm/registry.npmjs.org/@apollo/usage-reporting-protobuf/4.1.1/generated/esm/protobuf.d.ts";
 
 type Context = {
     BibliotecasCollection:Collection<BibliotecaModel>
@@ -65,7 +66,7 @@ export const resolvers = {
 
             if(!phoneIsVAlid(phone)){throw new Error("El número de teléfono introducido no es válido")}
             
-            const {Id} = await ctx.BibliotecasCollection.insertOne({
+            const {insertedId} = await ctx.BibliotecasCollection.insertOne({
                 name,
                 address,
                 phone,
@@ -76,7 +77,7 @@ export const resolvers = {
             })
 
             return {
-                _id: Id,
+                _id: insertedId,
                 name,
                 address,
                 phone,
@@ -85,6 +86,15 @@ export const resolvers = {
                 longitude,
                 country
             }
-        } 
+        },
+        
+        dleteBiblioteca: async(
+            _:unknown,
+            {id}: {id: string},
+            ctx: Context
+        ):Promise<boolean | null>=>{
+            const deleted = await ctx.BibliotecasCollection.deleteOne({_id: new ObjectId(id)})
+            return deleted.deletedCount === 1;
+        }
     }
 }

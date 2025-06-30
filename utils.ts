@@ -23,7 +23,7 @@ export const getCountryName = async(
 
 export const getCity = async(
     name: string
-):Promise<Array<{latitude:String, longitude:string, country:string}>>=>{
+):Promise<Array<{latitude:string, longitude:string, country:string}>>=>{
     const API_KEY = "fvnsynmnoJGgoY7r5cLH2w==qPZBPBN0FtBPbnQI"
     const url =`https://api.api-ninjas.com/v1/city?name=${name}`
 
